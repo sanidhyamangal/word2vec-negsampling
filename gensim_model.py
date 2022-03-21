@@ -2,6 +2,7 @@
 author:Sanidhya Mangal
 github:sanidhyamangal
 """
+from typing import Any
 from gensim.models import Word2Vec
 from dataloader import gensim_dataloader
 import gensim  # for other ops
@@ -9,24 +10,35 @@ import argparse  # for parsing the options
 import os  # for os ops
 
 
-def train_model(args):
+def train_model(args) -> None:
+    """Function to train word2vec model
 
+    Args:
+        args (Any): args to create the word2vec model and process them
+    """
+
+    # load data
     sentences = gensim_dataloader(args.path)
 
     print("Starting Model training")
-    model = Word2Vec(sentences,
-                     sg=1,
-                     min_count=args.min_count)
+    # init the model
+    model = Word2Vec(sentences, sg=1, min_count=args.min_count)
 
+    # create a path to save the model
     _path = os.path.split(args.path_to_saved_model)
-
     if len(_path) > 1:
         os.makedirs(os.path.join(*_path[:-1]), exist_ok=True)
 
+    # save the model
     model.save(args.path_to_saved_model)
 
 
-def predict_word_similarity(args):
+def predict_word_similarity(args:Any)-> None:
+    """Function to predict the word similarity for word2vec model
+
+    Args:
+        args (Any): argparser for loading trained model and topn words similarity
+    """
     model = Word2Vec.load(args.path)
     print(model.wv.most_similar(args.word, topn=args.top))
 

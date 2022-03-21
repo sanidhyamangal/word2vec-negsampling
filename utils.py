@@ -11,7 +11,16 @@ import torch
 import torch.nn as nn  # for nn ops
 
 
-def preprocess(text, word_freq:int=5):
+def preprocess(text, word_freq: int = 5):
+    """Function to remove the stop words and drop the words with freq less than specified threshold
+
+    Args:
+        text (str): Text which needs to be processed into tokens
+        word_freq (int, optional): threshold to specify what freq of words needs to be dropped. Defaults to 5.
+
+    Returns:
+        List[str]: List of words or tokens
+    """
 
     # Replace punctuation with tokens so we can use them in our model
     text = text.lower()
@@ -87,6 +96,8 @@ def cosine_similarity(embedding,
 
 
 class NegativeSamplingLoss(nn.Module):
+    """Class implementing the negative sampling loss
+    """
 
     def __init__(self):
         super().__init__()

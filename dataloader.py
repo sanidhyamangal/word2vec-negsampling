@@ -12,8 +12,18 @@ import pandas as pd  # for pd
 from gensim.utils import simple_preprocess
 
 
-def load_body_as_text(path_to_csv):
+def load_body_as_text(path_to_csv:str) -> str:
+    """Function to load the dataframe and convert the body into the continous stream of text
+
+    Args:
+        path_to_csv (str): path to the data file containing csv
+
+    Returns:
+        str: continous string of words which needs to be processed
+    """
+    # read the lines from the csv file
     lines = pd.read_csv(path_to_csv)['body'].apply(str.strip).values
+    # create a text stream based on the lines.
     text = " ".join(i.strip() for i in lines)
 
     return text
@@ -22,6 +32,7 @@ def load_body_as_text(path_to_csv):
 def get_target(words, idx, window_size=5):
     ''' Get a list of words in a window around an index. '''
 
+    # randomly sample the window to get the target words
     R = np.random.randint(1, window_size + 1)
     start = idx - R if (idx - R) > 0 else 0
     stop = idx + R
@@ -49,7 +60,15 @@ def get_batches(words, batch_size, window_size=20):
         yield x, y
 
 
-def gensim_dataloader(path):
+def gensim_dataloader(path:str)-> List[List[str]]:
+    """function to load the data from csv file and process it for gensim word2vec model
+
+    Args:
+        path (str): path to the csv file for data loading
+
+    Returns:
+        List[List[str]]: returns the two array of preprocessed lines
+    """
     lines = pd.read_csv(path)['body'].apply(str.strip).values
 
     return [simple_preprocess(i) for i in lines]
