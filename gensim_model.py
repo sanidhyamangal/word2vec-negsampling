@@ -16,13 +16,12 @@ def train_model(args):
     print("Starting Model training")
     model = Word2Vec(sentences,
                      sg=1,
-                     window=args.window,
-                     min_count=args.min_count,
-                     negative=args.neg)
+                     min_count=args.min_count)
 
     _path = os.path.split(args.path_to_saved_model)
 
-    os.makedirs(os.path.join(*_path[:-1]), exist_ok=True)
+    if len(_path) > 1:
+        os.makedirs(os.path.join(*_path[:-1]), exist_ok=True)
 
     model.save(args.path_to_saved_model)
 
@@ -48,19 +47,9 @@ if __name__ == "__main__":
     train.add_argument("--path_to_saved_model",
                        help="path to save model file",
                        dest="path_to_saved_model")
-    train.add_argument("--window",
-                       help="window size for the trainer, default 5",
-                       dest="window",
-                       type=int,
-                       default=5)
-    train.add_argument("--min_count",
+    train.add_argument("--N",
                        help="min_count size for the trainer,default 5",
                        dest="min_count",
-                       type=int,
-                       default=5)
-    train.add_argument("--neg",
-                       help="negative samples to consider, default 5",
-                       dest="neg",
                        type=int,
                        default=5)
 

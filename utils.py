@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn  # for nn ops
 
 
-def preprocess(text):
+def preprocess(text, word_freq:int=5):
 
     # Replace punctuation with tokens so we can use them in our model
     text = text.lower()
@@ -31,7 +31,7 @@ def preprocess(text):
 
     # Remove all words with  5 or fewer occurences
     word_counts = Counter(words)
-    trimmed_words = [word for word in words if word_counts[word] > 5]
+    trimmed_words = [word for word in words if word_counts[word] > word_freq]
 
     return trimmed_words
 
