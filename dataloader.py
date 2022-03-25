@@ -41,7 +41,7 @@ def get_target(words, idx, window_size=5):
     return list(target_words)
 
 
-def get_batches(words, batch_size, window_size=20):
+def get_batches(words, batch_size, window_size=5):
     ''' Create a generator of word batches as a tuple (inputs, targets) '''
 
     n_batches = len(words) // batch_size
